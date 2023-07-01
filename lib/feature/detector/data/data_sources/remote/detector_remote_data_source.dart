@@ -13,7 +13,7 @@ class DetectorRemoteDataSource {
   Future<DetectorModel> detect(String userInput) async {
     try {
       final response = await _networkClient.post<Map<String, dynamic>>(
-        'https://c5d03e39a0f9.ngrok.app/api/score',
+        'https://api.scangpt.space/api/score',
         data: {'text': userInput},
       );
       final model = response.data;

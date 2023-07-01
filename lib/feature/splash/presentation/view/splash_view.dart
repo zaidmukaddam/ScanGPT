@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:scan_gpt/app/router/app_router.dart';
 import 'package:scan_gpt/feature/detector/presentation/view/detect_view.dart';
 import 'package:scan_gpt/feature/onboarding/presentation/view/onboarding_view.dart';
 import 'package:scan_gpt/feature/splash/presentation/cubit/splash_cubit.dart';
-
 import 'package:scan_gpt/injection.dart';
 
 class SplashView extends StatelessWidget {
@@ -37,9 +37,9 @@ class _SplashViewBodyState extends State<_SplashViewBody> {
 
   void _checkIsOnboardingCompleted() {
     if (context.read<SplashCubit>().state.isOnboardingCompleted ?? false) {
-      Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => const DetectView()));
+      AppRouter.pushReplacement(context, const DetectView());
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => const OnboardingView()));
+      AppRouter.pushReplacement(context, const OnboardingView());
     }
     FlutterNativeSplash.remove();
   }

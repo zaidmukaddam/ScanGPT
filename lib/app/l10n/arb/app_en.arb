@@ -5,7 +5,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "version": "Version 1.0.0",
+  "version": "Version 1.7.0",
   "@version": {
     "description": "Displays the current version of the app",
     "type": "text",
@@ -68,6 +68,12 @@
   "noInternetFailure": "Please check your Internet connection.",
   "@noInternetFailure": {
     "description": "Displayed in case of a Failure.noInternetFailure()",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unsupportedLanguage": "Please input a text in English. Using other languages may give inaccurate results.",
+  "@unsupportedLanguage": {
+    "description": "Displayed when the user enters a text in an unsupported language",
     "type": "text",
     "placeholders": {}
   },

@@ -50,11 +50,11 @@ void main() {
     });
 
     test(
-        "Default value of the 'result' variable must be \"(DetectorEntity(fakeProb: 0.00, realProb: 0.00, allTokens: 0)\" at start",
+        "Default value of the 'result' variable must be \"(DetectorEntity(fakeProb: 0.00, realProb: 0.00, isSupportedLanguage: true)\" at start",
         () {
       expect(
         detectorCubit.state.result,
-        const DetectorEntity(fakeProb: 0, realProb: 0, allTokens: 0),
+        const DetectorEntity(fakeProb: 0, realProb: 0, isSupportedLanguage: true),
       );
     });
 
@@ -68,8 +68,8 @@ void main() {
       build: () => detectorCubit,
       act: (bloc) => bloc.detectionRequested(text: validUserInput),
       expect: () => [
-        DetectorState(status: FormzStatus.submissionInProgress),
-        DetectorState(
+        detectorCubit.state.copyWith(status: FormzStatus.submissionInProgress, failure: null),
+        detectorCubit.state.copyWith(
           status: FormzStatus.submissionFailure,
           failure: const Failure.networkFailure(),
         ),
@@ -86,10 +86,19 @@ void main() {
       build: () => detectorCubit,
       act: (bloc) => bloc.detectionRequested(text: validUserInput),
       expect: () => [
-        DetectorState(status: FormzStatus.submissionInProgress),
-        DetectorState(
-          result: mockDetectorEntity,
+        detectorCubit.state.copyWith(
+          status: FormzStatus.submissionInProgress,
+          failure: null,
+          result: const DetectorEntity(
+            realProb: 0,
+            fakeProb: 0,
+            isSupportedLanguage: true,
+          ),
+        ),
+        detectorCubit.state.copyWith(
           status: FormzStatus.submissionSuccess,
+          failure: null,
+          result: mockDetectorEntity,
         ),
       ],
     );
@@ -100,7 +109,7 @@ void main() {
       build: () => detectorCubit,
       act: (bloc) => bloc.textChanged(text: invalidUserInput),
       expect: () => [
-        DetectorState(userInput: invalidInputForm, status: Formz.validate([invalidInputForm])),
+        detectorCubit.state.copyWith(userInput: invalidInputForm, status: Formz.validate([invalidInputForm])),
       ],
     );
 
@@ -109,7 +118,7 @@ void main() {
       build: () => detectorCubit,
       act: (bloc) => bloc.textChanged(text: validUserInput),
       expect: () => [
-        DetectorState(userInput: validInputForm, status: Formz.validate([validInputForm])),
+        detectorCubit.state.copyWith(userInput: validInputForm, status: Formz.validate([validInputForm])),
       ],
     );
   });
@@ -120,7 +129,7 @@ void main() {
       build: () => detectorCubit,
       act: (bloc) => bloc.clearTextPressed(),
       expect: () => [
-        DetectorState(),
+        DetectorState.initial(),
       ],
     );
   });
@@ -136,7 +145,7 @@ void main() {
       build: () => detectorCubit,
       act: (bloc) => bloc.ocrFromGalleryPressed(),
       expect: () => [
-        DetectorState(
+        detectorCubit.state.copyWith(
           failure: const Failure.noPermission(),
         ),
       ],
@@ -152,7 +161,7 @@ void main() {
       build: () => detectorCubit,
       act: (bloc) => bloc.ocrFromGalleryPressed(),
       expect: () => [
-        DetectorState(
+        detectorCubit.state.copyWith(
           userInput: validInputForm,
           status: FormzStatus.valid,
         ),
@@ -171,7 +180,7 @@ void main() {
       build: () => detectorCubit,
       act: (bloc) => bloc.ocrFromCameraPressed(),
       expect: () => [
-        DetectorState(
+        detectorCubit.state.copyWith(
           failure: const Failure.noPermission(),
         ),
       ],
@@ -187,7 +196,7 @@ void main() {
       build: () => detectorCubit,
       act: (bloc) => bloc.ocrFromCameraPressed(),
       expect: () => [
-        DetectorState(
+        detectorCubit.state.copyWith(
           userInput: validInputForm,
           status: FormzStatus.valid,
         ),

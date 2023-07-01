@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:neopop/neopop.dart';
 import 'package:scan_gpt/app/l10n/l10n.dart';
+import 'package:scan_gpt/app/router/app_router.dart';
 import 'package:scan_gpt/core/extensions/context_extensions.dart';
 import 'package:scan_gpt/core/extensions/widget_extensions.dart';
 import 'package:scan_gpt/feature/detector/presentation/view/detect_view.dart';
@@ -87,14 +88,7 @@ class _OnboardingViewBody extends StatelessWidget {
                           .read<OnboardingCubit>()
                           .completeOnboarding();
                       if (context.mounted) {
-                        unawaited(
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute<void>(
-                              builder: (context) => const DetectView(),
-                            ),
-                          ),
-                        );
+                        unawaited(AppRouter.pushReplacement(context, const DetectView()));
                       }
                     },
                     onTapUp: HapticFeedback.vibrate,
